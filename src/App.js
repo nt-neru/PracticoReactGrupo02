@@ -1,25 +1,10 @@
 import React from 'react';
 import { Container, Row } from 'react-bootstrap';
 
-//Componentes
+//Componente
 import ListaNotas from './components/ListaNotas'; 
 
-function App(){ // Componente Padre
-
-    const sitio={
-        img: ",",
-        nombre: "",
-        descripcion: "",
-        valoracion: "",
-    }
-
-    const addSitio= (sitio) =>{
-        // setSitios([...sitios, newSitio]);
-
-    }
-
-    // onSubmit : llama una funcion PROPS
-
+export default function App(){
     return( 
         <Container>
             <Row>
@@ -28,4 +13,3 @@ function App(){ // Componente Padre
         </Container>
     );
 }
-export default App;
