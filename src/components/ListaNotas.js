@@ -1,12 +1,12 @@
-// ListaNotas.jsx
 import React, { useState } from "react";
-import { Form, Row, Button, ListGroup, Col, InputGroup } from "react-bootstrap";
+import { Form, Button, ListGroup, InputGroup } from "react-bootstrap";
 import Nota from "./Nota";
 
 export default function ListaNotas() {
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [notes, setNotes] = useState([]);
+  const [estadoDeNota, setEstadoDeNota] = useState(1);
 
   const guardarInput = (e) => {
     setDescripcion(e.target.value);
@@ -17,7 +17,7 @@ export default function ListaNotas() {
   };
 
   const addNote = (e) => {
-    if (titulo.trim() !== "" && descripcion.trim() !== "") {
+    if (titulo.trim() !== "" && descripcion.trim() !== "" && estadoDeNota === 1 ) {
       const descripcionExistente = notes.some((nota) => nota.descripcion === descripcion);
 
       if (!descripcionExistente) {
@@ -25,7 +25,8 @@ export default function ListaNotas() {
           id: notes.length,
           titulo: titulo,
           descripcion: descripcion,
-          estado: true,
+          estadoVisible: true,
+          estadoDeNota: estadoDeNota,
         };
         setNotes([...notes, nuevaNota]);
         setTitulo("");
@@ -34,14 +35,28 @@ export default function ListaNotas() {
         alert("La Nota ya existe");
       }
     }
-  }
+  };
 
   const deleteNote = (id) => {
     const nuevaLista = notes.map((nota) =>
-      nota.id === id ? { ...nota, estado: false } : nota
+      nota.id === id ? { ...nota, estadoDeNota: 0 } : nota
     );
     setNotes(nuevaLista);
-  }
+  };
+
+  const notaProceso = (id) => {
+    const nuevaLista = notes.map((nota) =>
+      nota.id === id ? { ...nota, estadoDeNota: 2 } : nota
+    );
+    setNotes(nuevaLista);
+  };
+
+  const notaTerminada = (id) => {
+    const nuevaLista = notes.map((nota) =>
+      nota.id === id ? { ...nota, estadoDeNota: 3} : nota
+    );
+    setNotes(nuevaLista);
+  };
 
   return (
     <>
@@ -49,7 +64,9 @@ export default function ListaNotas() {
 
       <Form>
         <InputGroup className="mb-3">
-          <Button variant="success" onClick={addNote}>Agregar Nota</Button>
+          <Button variant="success" onClick={addNote}>
+            Agregar Nota
+          </Button>
           <Form.Control
             type="text"
             onChange={guardarTitulo}
@@ -67,17 +84,60 @@ export default function ListaNotas() {
 
       <div className="justify-content-center">
         <ListGroup>
-          {notes.map((nota) => (
-            nota.estado ? (
+          {notes.map((nota) =>
+            nota.estadoDeNota === 1 ? (
               <Nota
                 key={nota.id}
                 id={nota.id}
                 titulo={nota.titulo}
                 descripcion={nota.descripcion}
+                estadoDeNota={nota.estadoDeNota}
                 delete={deleteNote}
+                notaProceso={notaProceso}
+                notaTerminada={notaTerminada}
               />
             ) : null
-          ))}
+          )}
+        </ListGroup>
+      </div>
+      <br />
+      <h1 className="m-4">Notas en Proceso</h1>
+      <div className="justify-content-center">
+        <ListGroup>
+          {notes.map((nota) =>
+            nota.estadoDeNota === 2 ? (
+              <Nota
+                key={nota.id}
+                id={nota.id}
+                titulo={nota.titulo}
+                descripcion={nota.descripcion}
+                estadoDeNota={nota.estadoDeNota}
+                delete={deleteNote}
+                notaProceso={notaProceso}
+                notaTerminada={notaTerminada}
+              />
+            ) : null
+          )}
+        </ListGroup>
+      </div>
+      <br />
+      <h1 className="m-4">Notas Finalizadas</h1>
+      <div className="justify-content-center">
+        <ListGroup>
+          {notes.map((nota) =>
+            nota.estadoDeNota === 3 ? (
+              <Nota
+                key={nota.id}
+                id={nota.id}
+                titulo={nota.titulo}
+                descripcion={nota.descripcion}
+                estadoDeNota={nota.estadoDeNota}
+                delete={deleteNote}
+                notaProceso={notaProceso}
+                notaTerminada={notaTerminada}
+              />
+            ) : null
+          )}
         </ListGroup>
       </div>
     </>
