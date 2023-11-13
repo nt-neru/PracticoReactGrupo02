@@ -1,19 +1,16 @@
+// Nota.jsx
 import React from "react";
-import { Row, Button, ListGroup, Col } from "react-bootstrap";
+import { ListGroup, Button } from "react-bootstrap";
 
-export default function Nota(props) {
+export default function Nota({ id, titulo, descripcion, delete: deleteNote }) {
   return (
-    <ListGroup>
-      <Row>
-        <Col sm={11}>
-          <ListGroup.Item key={props.id}>{props.descripcion}</ListGroup.Item>
-        </Col>
-        <Col sm={1}>
-          <Button variant="danger" onClick={() => props.delete(props.id)}>
-            Eliminar
-          </Button>
-        </Col>
-      </Row>
-    </ListGroup>
+    <ListGroup.Item className="d-flex justify-content-between align-items-center">
+      <div>
+        <strong>{titulo}</strong>: {descripcion}
+      </div>
+      <Button variant="danger" onClick={() => deleteNote(id)}>
+        Eliminar
+      </Button>
+    </ListGroup.Item>
   );
 }
