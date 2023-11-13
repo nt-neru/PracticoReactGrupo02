@@ -8,6 +8,7 @@ export default function Nota({ id, titulo, descripcion, delete: deleteNote, nota
       <div>
         <strong>{titulo}</strong><br></br> {descripcion}
       </div>
+      <div>
       <Button variant="danger" onClick={() => deleteNote(id)}>
         Eliminar
       </Button>
@@ -17,6 +18,7 @@ export default function Nota({ id, titulo, descripcion, delete: deleteNote, nota
       <Button variant="success" onClick={() => notaTerminada(id)}>
         Nota Terminada
       </Button>
+      </div>
     </ListGroup.Item>
   );
 }
